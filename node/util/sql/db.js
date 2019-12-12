@@ -31,8 +31,9 @@ const db = {
         return this.pool;
     },
     query: (query, values) => {
-        let conn = this.getConnection();
-        conn.queryDatabase(conn, query, values);
+        this.getConnection().then(conn => {
+            queryDatabase(conn, query, values);
+        });
     }
 };
 
