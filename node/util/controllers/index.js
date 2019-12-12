@@ -1,0 +1,1 @@
+const genericController = require('./generic.controller');
