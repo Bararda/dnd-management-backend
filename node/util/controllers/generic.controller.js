@@ -1,16 +1,28 @@
 const genericController = {
-    get: () => {
-
+    get(service) {
+        return async (req, res, next) => {
+            //get query object from res
+            next();
+        }
     },
-    put: () => {
-
+    put(service) {
+        return async (req, res, next) => {
+            //get query and body
+            next();
+        }
     },
-    post: () => {
-
+    post(service) {
+        return async (req, res, next) => {
+            //get body
+            next();
+        }
     },
-    remove: () => {
-
+    remove(service) {
+        return async (req, res, next) => {
+            //get
+            next();
+        }
     },
 };
 
-module.exports = 'Hello world';
+module.exports = genericController;

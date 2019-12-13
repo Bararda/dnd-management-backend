@@ -1,14 +1,14 @@
 const genericService = {
-    get: async db => {
+    get(db) {
 
     },
-    create: async db => {
+    create(db) {
 
     },
-    update: async db => {
+    update(db) {
 
     },
-    remove: async db => {
+    remove(db) {
 
     }
 };
