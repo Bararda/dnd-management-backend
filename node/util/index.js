@@ -1,10 +1,10 @@
 const sql = require("./sql");
-const genericServices = require("./services");
+const genericService = require("./services");
 const genericDb = require("./db");
 const genericController = require("./controllers");
 module.exports = {
     sql,
     genericController,
-    genericServices,
+    genericService,
     genericDb
 };

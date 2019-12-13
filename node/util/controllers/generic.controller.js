@@ -1,14 +1,14 @@
-function getQuery() {
-    return res.locals.query || res.query || {};
+function getQuery(req, res) {
+    return res.locals.query || req.query || {};
 }
-function getBody() {
-    return res.locals.body || res.body;
+function getBody(req, res) {
+    return res.locals.body || req.body;
 }
 const genericController = {
     get(service) {
         return async (req, res, next) => {
             try {
-                let query = getQuery();
+                let query = getQuery(req, res);
                 res.locals.data = await service(query);
                 next();
             } catch (e) {
@@ -19,8 +19,8 @@ const genericController = {
     put(service) {
         return async (req, res, next) => {
             try {
-                let query = getQuery();
-                let body = getBody();
+                let query = getQuery(req, res);
+                let body = getBody(req, res);
                 res.locals.data = await service(query, body);
                 next();
             } catch (e) {
@@ -31,7 +31,7 @@ const genericController = {
     post(service) {
         return async (req, res, next) => {
             try {
-                let body = getBody();
+                let body = getBody(req, res);
                 res.locals.data = await service(body);
                 next();
             } catch (e) {
@@ -42,7 +42,7 @@ const genericController = {
     remove(service) {
         return async (req, res, next) => {
             try {
-                let query = getQuery();
+                let query = getQuery(req, res);
                 res.locals.data = await service(query);
                 next();
             } catch (e) {
