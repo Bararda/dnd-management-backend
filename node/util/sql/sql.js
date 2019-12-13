@@ -5,4 +5,4 @@ const sql = {
         });
     }
 }
-module.exports = { sql };
+module.exports = sql;

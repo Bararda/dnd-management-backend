@@ -7,11 +7,13 @@ const sql = require("mysql");
  */
 function queryDatabase(conn, query, values) {
     const callback = (error, results, fields) => {
-        conn.release();
-        if(error) {
-            throw error;
-        }
-        console.log(results);
+        return new Promise((res, rej) =>  {
+            conn.release();
+            if(error) {
+                rej(error);
+            }
+            res(results);
+        });
     };
     conn.query(query, values, callback);
 }

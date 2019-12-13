@@ -1,3 +1,5 @@
+const db = require("../db");
+
 const genericDb = {
     get(tablename) {
         return async query => {

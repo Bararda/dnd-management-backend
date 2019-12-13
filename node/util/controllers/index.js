@@ -1,2 +1,2 @@
 const genericController = require('./generic.controller');
-module.exports = {};
+module.exports = genericController;
