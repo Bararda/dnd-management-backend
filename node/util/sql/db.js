@@ -5,36 +5,47 @@ const sql = require("mysql");
  * @param {String} query
  * @param {Array} values
  */
-function queryDatabase(conn, query, values) {
-    const callback = (error, results, fields) => {
-        return new Promise((res, rej) =>  {
-            conn.release();
-            if(error) {
-                rej(error);
-            }
-            res(results);
-        });
-    };
-    conn.query(query, values, callback);
+async function queryDatabase(conn, query, values, callback) {
+//TODO
 }
 
 const db = {
-    getConnection: () => {
+    getConnection: async () => {
         if (!this.pool) {
-            
-            this.pool = sql.createPool({
+            this.pool = await sql.createPool({
                 connectionLimit: process.env.CONNECTION_LIMIT || 10,
-                host: process.env.HOSTNAME || "localhost",
-                user: process.env.USERNAME,
-                password: process.env.PASSWORD,
+                host: process.env.DB_HOSTNAME || "localhost",
+                user: process.env.DB_USERNAME,
+                password: process.env.DB_PASSWORD,
                 database: process.env.DATABASE || "InventoryManager"
             });
         }
         return this.pool;
     },
-    query: (query, values) => {
-        this.getConnection().then(conn => {
-            queryDatabase(conn, query, values);
+    query: async (query, values) => {
+        return new Promise((res, rej) => {
+            db.getConnection().then(pool => {
+                pool.getConnection((err, conn) => {
+                    //could be modularized I'm just bad
+                    if (err) {
+                        console.log(err);
+                        rej(err);
+                    }
+                    const callback = (error, results, fields) => {
+                        conn.release();
+                        if (error) {
+                             rej(error);
+                        }
+                        console.log("res", results);
+                        res(results);
+                    };
+                    if (values.length === 0) {
+                        conn.query(query, callback);
+                    } else {
+                        conn.query(query, values, callback);
+                    }
+                });
+            });
         });
     }
 };
