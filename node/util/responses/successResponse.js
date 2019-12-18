@@ -1,7 +1,7 @@
 const sendResponse = require("./sendResponse")
 const success = {
-    ok(res, message) {
-        sendResponse(res, 200, message || "OK");
+    ok(res, data) {
+        sendResponse(res, 200, data || "OK");
     },
     created(res, message) {
         sendResponse(res, 201, message || "created");
