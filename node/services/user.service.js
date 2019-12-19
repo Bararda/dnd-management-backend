@@ -7,11 +7,9 @@ const userService = {
     create: genericService.create(async user => {
         console.log(user);
             if (user.password) {
-                const ROUNDS = 10; 
-                const salt = await bcrypt.genSalt();
-                const hash = await bcrypt.hash(user.password + salt, ROUNDS);
+                const saltRounds = 13; 
+                const hash = await bcrypt.hash(user.password, saltRounds);
                 user.password = hash;
-                user.salt = salt;
                 let results = await userDb.create(user);
                 return results;
             } else throw 400;
