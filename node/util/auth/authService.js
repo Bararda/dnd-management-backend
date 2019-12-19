@@ -36,10 +36,10 @@ function getPublicKey() {
  */
 const authService = {
     /**
-     * 
-     * @param {RE} req 
-     * @param {*} res 
-     * @param {*} next 
+     *  validates user logins and issues them a token
+     * @param {Request} req 
+     * @param {Response} res 
+     * @param {Next} next 
      */
     login(req, res, next) {
         let username = res.locals.body.username || req.body.username;
@@ -47,10 +47,15 @@ const authService = {
         if(username && password) {
             //TODO validate username and password here
            this.issueToken(userID);
+           next();
         } else {
             clientError.badRequest(res);
         }
     },
+    /**
+     * Issues a token for the validated userID
+     * @param {Int} userID 
+     */
     issueToken(userID) {
         const pk = await getPrivateKey();
         let token = jwt.sign({userID}, pk, {
@@ -62,6 +67,12 @@ const authService = {
             token: token
         });
     },
+    /**
+     * Validates a token
+     * @param {Request} req 
+     * @param {Response} res 
+     * @param {Next} next 
+     */
     validateToken(req, res, next) {
         let token = req.headers['x-access-token'] || req.headers['authorization'];
         if (token.startsWith('Bearer ')) {
