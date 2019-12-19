@@ -36,9 +36,9 @@ const db = {
                         if (error) {
                              rej(error);
                         }
-                        console.log("res", results);
                         res(results);
                     };
+                    console.log(query);
                     if (values.length === 0) {
                         conn.query(query, callback);
                     } else {

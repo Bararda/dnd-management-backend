@@ -1,2 +1,4 @@
 node/node_modules/
 node/.env
+node/public_key.txt
+node/private_key.txt

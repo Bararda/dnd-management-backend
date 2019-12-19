@@ -56,7 +56,7 @@ const authService = {
      * Issues a token for the validated userID
      * @param {Int} userID 
      */
-    issueToken(userID) {
+    async issueToken(userID) {
         const pk = await getPrivateKey();
         let token = jwt.sign({userID}, pk, {
             expiresIn: "30m"
@@ -73,7 +73,7 @@ const authService = {
      * @param {Response} res 
      * @param {Next} next 
      */
-    validateToken(req, res, next) {
+    async validateToken(req, res, next) {
         let token = req.headers['x-access-token'] || req.headers['authorization'];
         if (token.startsWith('Bearer ')) {
             // Remove Bearer from string
