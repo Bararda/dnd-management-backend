@@ -1,5 +1,6 @@
+DROP DATABASE InventoryManager;
 CREATE DATABASE InventoryManager;
-
+USE InventoryManager;
 CREATE TABLE roles (
     role_id INT AUTO_INCREMENT,
     role_name TEXT NOT NULL,
@@ -9,7 +10,7 @@ CREATE TABLE roles (
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT,
     username TEXT not null,
-    pass TEXT not null,
+    password TEXT not null,
     role_id int NOT NULL,
     PRIMARY KEY (user_id),
     FOREIGN KEY fk_users_roles(role_id) REFERENCES roles(role_id)
