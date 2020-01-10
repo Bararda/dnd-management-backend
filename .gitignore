@@ -2,3 +2,8 @@ node/node_modules/
 node/.env
 node/public_key.txt
 node/private_key.txt
+inventory-manager/.gitignore
+node_modules/
+private_key.txt
+public_key.txt
+.env

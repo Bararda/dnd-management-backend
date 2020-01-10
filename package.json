@@ -1,0 +1,27 @@
+{
+  "name": "inventory_manager_api",
+  "version": "1.0.0",
+  "description": "Inventory Manager API",
+  "main": "index.js",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.19.0",
+    "crypto": "^1.0.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "https": "^1.0.0",
+    "isobject": "^4.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.24.0",
+    "mysql": "^2.17.1",
+    "nan": "^2.14.0",
+    "node-pre-gyp": "^0.14.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
