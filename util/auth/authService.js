@@ -1,8 +1,8 @@
-const jwt = require("jsonwebtoken");
-const fs = require("fs");
-const { clientError } = require("../responses");
-const bcrypt = require("bcrypt");
-const { userService } = require("../../services");
+const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const { clientError } = require('../responses');
+const bcrypt = require('bcrypt');
+const { userService } = require('../../services');
 /**
  * gets the private key from a file in the system
  */
@@ -67,11 +67,12 @@ const authService = {
     async issueToken(userID) {
         const pk = await getPrivateKey();
         let token = jwt.sign({ userID }, pk, {
-            expiresIn: "1h"
+            expiresIn: '1h',
+            algorithm: 'RS512',
         });
         return {
             success: true,
-            message: "Authentication successful!",
+            message: 'Authentication successful!',
             token: token
         };
     },
@@ -83,20 +84,23 @@ const authService = {
      */
     async validateToken(req, res, next) {
         let token =
-            req.headers["x-access-token"] || req.headers["authorization"];
+            req.headers['x-access-token'] || req.headers['authorization'];
 
         if (token) {
-            if (token.startsWith("Bearer ")) {
+            if (token.startsWith('Bearer ')) {
                 // Remove Bearer from string
                 token = token.slice(7, token.length);
             }
             let pk = await getPublicKey();
             console.log(token);
-            jwt.verify(token, pk, (err, decoded) => {
+            jwt.verify(token, pk, 
+                { expiresIn: '1h',
+                algorithm: ['RS512'], },
+                (err, decoded) => {
                 if (err) {
                     return res.json({
                         success: false,
-                        message: "Token is not valid"
+                        message: 'Token is not valid'
                     });
                 } else {
                     req.decoded = decoded;
@@ -106,7 +110,7 @@ const authService = {
         } else {
             return res.json({
                 success: false,
-                message: "Auth token is not supplied"
+                message: 'Auth token is not supplied'
             });
         }
     }
