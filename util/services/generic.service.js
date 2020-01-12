@@ -1,7 +1,14 @@
+/**
+ * TODO
+ * formats the data to a specified format
+ * @param {*} data 
+ */
 function formatData(data) {
-    //TODO
     return data;
 }
+/**
+ * calls the database function and formats the data.
+ */
 const genericService = {
     get(db) {
         return async query => {

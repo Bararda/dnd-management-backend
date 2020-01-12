@@ -1,4 +1,7 @@
 const sendResponse = require("./sendResponse");
+/**
+ * Sends errors about the client request
+ */
 const clientError = {
     badRequest(res, err) {
         sendResponse(res, 400, err || "Bad Request");

@@ -8,8 +8,13 @@ const sql = require("mysql");
 async function queryDatabase(conn, query, values, callback) {
 //TODO
 }
-
+/**
+ * A database wrapper that manages all communication with the database
+ */
 const db = {
+    /**
+     * gets the database connection and establishes a connection if not already connected
+     */
     getConnection: async () => {
         if (!this.pool) {
             this.pool = await sql.createPool({
@@ -22,6 +27,10 @@ const db = {
         }
         return this.pool;
     },
+    /**
+     * TODO modularize this function with queryDatabase
+     * queries the database. 
+     */
     query: async (query, values) => {
         return new Promise((res, rej) => {
             db.getConnection().then(pool => {

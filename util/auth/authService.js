@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
-const { clientError } = require("../responses");
 const bcrypt = require("bcrypt");
 const { userService } = require("../../services");
 /**
@@ -67,7 +66,7 @@ const authService = {
     async issueToken(userID) {
         const pk = await getPrivateKey();
         let token = jwt.sign({ userID }, pk, {
-            expiresIn: "1h"
+            expiresIn: process.env.JWT_LENGTH || "1h"
         });
         return {
             success: true,
