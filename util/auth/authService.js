@@ -94,7 +94,8 @@ const authService = {
             console.log(token);
             jwt.verify(token, pk, 
                 { expiresIn: '1h',
-                // algorithm: ['RS512'], },
+                // algorithm: ['RS512'], 
+            },
                 (err, decoded) => {
                 if (err) {
                     return res.json({
