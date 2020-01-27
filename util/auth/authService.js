@@ -50,6 +50,7 @@ const authService = {
             user = user[0];
             if (await bcrypt.compare(password, user.password)) {
                 const token = await authService.issueToken(user.user_id);
+                
                 return token;
             } else {
                 //unauthorized
@@ -66,13 +67,14 @@ const authService = {
     async issueToken(userID) {
         const pk = await getPrivateKey();
         let token = jwt.sign({ userID }, pk, {
-            expiresIn: process.env.JWT_LENGTH || "1h"
+            expiresIn: process.env.JWT_LENGTH || "5m"
             // algorithm: 'RS512',
         });
         return {
             success: true,
             message: 'Authentication successful!',
-            token: token
+            token: token,
+            expiresIn: process.env.JWT_LENGTH || '5m'
         };
     },
     /**
@@ -83,17 +85,16 @@ const authService = {
      */
     async validateToken(req, res, next) {
         let token =
-            req.headers['x-access-token'] || req.headers['authorization'];
-
+            req.headers['x-access-token'] || req.headers['authorization'] || req.session.token;
+        console.log(token);
         if (token) {
             if (token.startsWith('Bearer ')) {
                 // Remove Bearer from string
                 token = token.slice(7, token.length);
             }
             let pk = await getPublicKey();
-            console.log(token);
             jwt.verify(token, pk, 
-                { expiresIn: '1h',
+                { expiresIn: process.env.JWT_LENGTH || '5m'
                 // algorithm: ['RS512'], 
             },
                 (err, decoded) => {

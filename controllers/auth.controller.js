@@ -9,6 +9,7 @@ const  authController  = {
             console.log(body);
             res.locals.data = await authService.login(body);
             req.session.valid = true;
+            req.session.token = res.locals.data;
             next();
         } catch (e) {
             //authController.logout(res, res, next);
@@ -24,6 +25,18 @@ const  authController  = {
             if(err) next(err);
             else next();
         });
+    },
+    reissueToken(req, res, next) {
+        if(req.session.valid && req.session.token) {
+            if(req.decoded.userID) {
+                res.locals.data = await authService.issueToken(req.decoded.userID);
+                req.session.valid = true;
+                req.session.token = res.locals.data;
+                next();
+            }
+        } else {
+            throw 400;
+        }
     }
 }
 module.exports = authController;
