@@ -43,6 +43,7 @@ const db = {
                     const callback = (error, results, fields) => {
                         conn.release();
                         if (error) {
+                             console.log(error);
                              rej(error);
                         }
                         res(results);

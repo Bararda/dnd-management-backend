@@ -7,3 +7,7 @@ node_modules/
 private_key.txt
 public_key.txt
 .env
+data/
+util/import/
+routes/import.router.js
+scripts/spellsInit.sql

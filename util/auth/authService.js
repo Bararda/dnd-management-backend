@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const bcrypt = require("bcrypt");
-const { userService } = require("../../services");
+const userService = require("../../services/user.service");
 /**
  * gets the private key from a file in the system
  */
@@ -85,7 +85,11 @@ const authService = {
      */
     async validateToken(req, res, next) {
         let token =
-            req.headers['x-access-token'] || req.headers['authorization'] || req.session.token;
+            req.headers['x-access-token'] || req.headers['authorization'];
+
+            if(!token && req.session && req.session.token) {
+                token = req.session.token.token;
+            }
         console.log(token);
         if (token) {
             if (token.startsWith('Bearer ')) {
@@ -99,6 +103,7 @@ const authService = {
             },
                 (err, decoded) => {
                 if (err) {
+                    console.log(err);
                     return res.json({
                         success: false,
                         message: 'Token is not valid'

@@ -1,5 +1,5 @@
-const { authService } = require("../util/auth")
-const  authController  = {
+const { authService } = require("../util/auth");
+const authController = {
     /**
      * logs the user into the system and sets the flag to validate the session
      */
@@ -22,21 +22,27 @@ const  authController  = {
     logout: (req, res, next) => {
         // put a good way to invalidate the token here
         req.session.destroy(err => {
-            if(err) next(err);
+            if (err) next(err);
             else next();
         });
     },
-    reissueToken(req, res, next) {
-        if(req.session.valid && req.session.token) {
-            if(req.decoded.userID) {
-                res.locals.data = await authService.issueToken(req.decoded.userID);
-                req.session.valid = true;
-                req.session.token = res.locals.data;
-                next();
+    async reissueToken(req, res, next) {
+        if (await authService.validateToken()) {
+            if (req.session.valid && req.session.token) {
+                if (req.decoded.userID) {
+                    res.locals.data = await authService.issueToken(
+                        req.decoded.userID
+                    );
+                    req.session.valid = true;
+                    req.session.token = res.locals.data;
+                    next();
+                }
+            } else {
+                throw 400;
             }
         } else {
             throw 400;
         }
     }
-}
+};
 module.exports = authController;

@@ -11,7 +11,7 @@ function formatData(data) {
  */
 const genericService = {
     get(db) {
-        return async query => {
+        return async (query = {}) => {
             let results = await db(query);
             return formatData(results);
         };
@@ -23,13 +23,13 @@ const genericService = {
         };
     },
     update(db) {
-        return async (query, update) => {
+        return async (query = {}, update) => {
             let results = await db(query, update);
             return formatData(results);
         };
     },
     remove(db) {
-        return async query => {
+        return async (query = {}) => {
             let results = await db(query);
             return formatData(results);
         };

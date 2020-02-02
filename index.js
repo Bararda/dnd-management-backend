@@ -8,7 +8,6 @@ const session = require("express-session");
 const SESSION_LENGTH_24m = 1440000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
 //implement mysql session store later
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -34,15 +33,18 @@ app.use((req, res, next) => {
     let allowedOrigins = ["http://localhost"];
     let origin = req.headers.origin;
     if (allowedOrigins.indexOf(origin) > -1) {
-        res.setHeader("Access-Control-Allow-Oriign", origin);
+        // res.setHeader("Access-Control-Allow-Orign", '*');
+
     }
+    res.setHeader("Access-Control-Allow-Origin", '*');
+
     res.setHeader(
         "Access-Control-Allow-Methods",
         "GET, POST, PUT, DELETE, PATCH"
     );
     res.setHeader(
         "Access-Control-Allow-Headers",
-        "X-Requested-With, x-access-token, content-type, Authorization"
+        "X-Requested-With, X-access-token, Content-type, Authorization"
     );
     res.setHeader("Access-Control-Allow-Credentials", true);
     next();

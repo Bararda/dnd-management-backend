@@ -53,7 +53,6 @@ CREATE TABLE item_tags (
     PRIMARY KEY (item_id, tag_id)
 );
 
-
 CREATE TABLE bag_tags (
     bag_id INT NOT NULL,
     tag_id INT NOT NULL,
@@ -61,3 +60,95 @@ CREATE TABLE bag_tags (
     FOREIGN KEY (tag_id) REFERENCES tags(tag_id),
     PRIMARY KEY (bag_id, tag_id)
 );
+
+CREATE TABLE schools(
+    school_id INT AUTO_INCREMENT,
+    school_name TEXT,
+    school_description TEXT,
+    PRIMARY KEY (school_id)
+);
+
+CREATE TABLE classes(
+    class_id INT AUTO_INCREMENT,
+    class_name TEXT,
+    class_description TEXT,
+	hit_dice TEXT,
+    PRIMARY KEY (class_id)
+);
+
+CREATE TABLE spells(
+    spell_id INT AUTO_INCREMENT,
+    spell_name TEXT,
+    spell_level INT,
+    duration TEXT,
+    casting_time TEXT,
+    components TEXT,
+    school_id INT,
+    attack_save TEXT,
+    damage TEXT,
+    description TEXT,
+    PRIMARY KEY (spell_id),
+    FOREIGN KEY fk_spell_school(school_id)
+    REFERENCES schools(school_id)
+);
+
+CREATE TABLE class_spells(
+    spell_id INT,
+    class_id INT,
+    PRIMARY KEY (spell_id, class_id),
+    FOREIGN KEY fk_spell_class(spell_id)
+    REFERENCES spells(spell_id)
+    ON DELETE CASCADE,
+    FOREIGN KEY fk_class_spells(class_id)
+    REFERENCES classes(class_id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE user_spells(
+    spell_id INT,
+    user_id INT,
+    PRIMARY KEY (spell_id, user_id),
+    FOREIGN KEY fk_spell_user(spell_id)
+    REFERENCES spells(spell_id)
+    ON DELETE CASCADE,
+    FOREIGN KEY fk_user_spells(user_id)
+    REFERENCES users(user_id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE componenttypes(
+    component_type_id INT AUTO_INCREMENT,
+    component_type_name TEXT,
+    PRIMARY KEY (component_type_id)
+);
+
+CREATE TABLE spell_componenttypes(
+    spell_id INT,
+    component_type_id INT,
+    PRIMARY KEY (spell_id, component_type_id),
+    FOREIGN KEY fk_spell_component_type(spell_id)
+    REFERENCES spells(spell_id)
+    ON DELETE CASCADE,
+    FOREIGN KEY fk_component_type_spells(component_type_id)
+    REFERENCES componenttypes(component_type_id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE damagetypes(
+    damage_type_id INT AUTO_INCREMENT,
+    damage_type_name TEXT,
+    PRIMARY KEY (damage_type_id)
+);
+
+CREATE TABLE spell_damagetypes(
+    spell_id INT,
+    damage_type_id INT,
+    PRIMARY KEY (spell_id, damage_type_id),
+    FOREIGN KEY fk_spell_damagetype(spell_id)
+    REFERENCES spells(spell_id)
+    ON DELETE CASCADE,
+    FOREIGN KEY fk_damagetype_spells(damage_type_id)
+    REFERENCES damagetypes(damage_type_id)
+    ON DELETE CASCADE
+);
+
