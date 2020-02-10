@@ -23,6 +23,18 @@ const classRouter = require("./class.router");
 router.use("/classes", classRouter);
 
 const componentTypeRouter = require("./componentType.router");
-router.use("/componetTypes", componentTypeRouter);
+router.use("/componentTypes", componentTypeRouter);
+
+const damageTypeRouter = require("./damageType.router");
+router.use("/damageTypes", damageTypeRouter);
+
+const classSpellRouter = require("./classSpell.router");
+router.use("/classSpells", classSpellRouter);
+
+const spellDamageTypeRouter = require("./spellDamageType.router");
+router.use("/spellDamageTypes", spellDamageTypeRouter);
+
+const spellComponentTypeRouter = require("./spellComponentType.router");
+router.use("/spellComponentTypes", spellComponentTypeRouter);
 
 module.exports = router;

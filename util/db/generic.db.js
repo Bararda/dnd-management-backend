@@ -21,7 +21,7 @@ const genericDb = {
     create(tablename) {
         return async object => {
             const statement = `INSERT INTO ?? SET ?`;
-            const results = db.query(statement, [tablename, object]);
+            const results = await db.query(statement, [tablename, object]);
             return results.insertId;
         };
     },
@@ -34,7 +34,7 @@ const genericDb = {
         return async (query, updates) => {
             let [whereClause, values] = sql.buildWhere(query);
             const statement = `UPDATE ?? SET ? WHERE ${whereClause}`;
-            const results = db.query(statement, [tablename, updates, ...values]);
+            const results = await db.query(statement, [tablename, updates, ...values]);
             return results.affectedRows;
         };
     },
@@ -46,7 +46,7 @@ const genericDb = {
         return async query => {
             let [whereClause, values] = sql.buildWhere(query);
             const statement = `DELETE FROM ?? WHERE ${whereClause}`;
-            const results = db.query(statement, [tablename, ...values]);
+            const results = await db.query(statement, [tablename, ...values]);
             return results.affectedRows;
         };
     }

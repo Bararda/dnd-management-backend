@@ -16,7 +16,7 @@ app.use(session({
     cookie: {
         name: 'inventory-manager',
         httpOnly: false,
-        maxAge: new Date().getTime() + SESSION_LENGTH_24m,
+        maxAge: SESSION_LENGTH_24m,
         sameSite: 'lax',
         secure: false, // change to true on HTTPS connection
         resave: false,
@@ -30,13 +30,11 @@ app.use(session({
  * sets the response headers
  */
 app.use((req, res, next) => {
-    let allowedOrigins = ["http://localhost"];
+    let allowedOrigins = ["http://localhost:3000"];
     let origin = req.headers.origin;
     if (allowedOrigins.indexOf(origin) > -1) {
-        // res.setHeader("Access-Control-Allow-Orign", '*');
-
+        res.setHeader("Access-Control-Allow-Origin", origin);
     }
-    res.setHeader("Access-Control-Allow-Origin", '*');
 
     res.setHeader(
         "Access-Control-Allow-Methods",

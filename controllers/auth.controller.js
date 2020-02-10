@@ -6,7 +6,6 @@ const authController = {
     login: async (req, res, next) => {
         try {
             let body = res.locals.body || req.body;
-            console.log(body);
             res.locals.data = await authService.login(body);
             req.session.valid = true;
             req.session.token = res.locals.data;
@@ -27,21 +26,44 @@ const authController = {
         });
     },
     async reissueToken(req, res, next) {
-        if (await authService.validateToken()) {
-            if (req.session.valid && req.session.token) {
-                if (req.decoded.userID) {
-                    res.locals.data = await authService.issueToken(
-                        req.decoded.userID
-                    );
-                    req.session.valid = true;
-                    req.session.token = res.locals.data;
-                    next();
-                }
-            } else {
-                throw 400;
+        console.log("reissue token");
+        if (req.session.valid && req.session.token) {
+            if (req.decoded.userID) {
+                res.locals.data = await authService.issueToken(
+                    req.decoded.userID
+                );
+                req.session.valid = true;
+                req.session.token = res.locals.data;
+                next();
             }
         } else {
+            console.log("1");
             throw 400;
+        }
+    },
+    async validateToken(req, res, next) {
+        let token =
+            req.headers["x-access-token"] || req.headers["authorization"];
+
+        if (!token && req.session && req.session.token) {
+            token = req.session.token.token;
+        }
+        if (token) {
+            const response = await authService.validateToken(token);
+            if (response) {
+                req.decoded = response;
+                next();
+            } else {
+                return res.json({
+                    success: false,
+                    message: "Token is not valid"
+                });
+            }
+        } else {
+            return res.json({
+                success: false,
+                message: "Auth Token not supplied"
+            });
         }
     }
 };

@@ -50,7 +50,7 @@ const authService = {
             user = user[0];
             if (await bcrypt.compare(password, user.password)) {
                 const token = await authService.issueToken(user.user_id);
-                
+
                 return token;
             } else {
                 //unauthorized
@@ -72,53 +72,39 @@ const authService = {
         });
         return {
             success: true,
-            message: 'Authentication successful!',
+            message: "Authentication successful!",
             token: token,
-            expiresIn: process.env.JWT_LENGTH || '5m'
+            expiresIn: process.env.JWT_LENGTH || "5m"
         };
     },
     /**
      * Validates a token
-     * @param {Request} req
-     * @param {Response} res
-     * @param {Next} next
+     * @param {Token} token the jwt to validate
      */
-    async validateToken(req, res, next) {
-        let token =
-            req.headers['x-access-token'] || req.headers['authorization'];
-
-            if(!token && req.session && req.session.token) {
-                token = req.session.token.token;
-            }
-        console.log(token);
-        if (token) {
-            if (token.startsWith('Bearer ')) {
+    validateToken(token) {
+        return new Promise(async (res, rej) => {
+            if (token.startsWith("Bearer ")) {
                 // Remove Bearer from string
                 token = token.slice(7, token.length);
             }
             let pk = await getPublicKey();
-            jwt.verify(token, pk, 
-                { expiresIn: process.env.JWT_LENGTH || '5m'
-                // algorithm: ['RS512'], 
-            },
+            jwt.verify(
+                token,
+                pk,
+                {
+                    expiresIn: process.env.JWT_LENGTH || "5m"
+                    // algorithm: ['RS512'],
+                },
                 (err, decoded) => {
-                if (err) {
-                    console.log(err);
-                    return res.json({
-                        success: false,
-                        message: 'Token is not valid'
-                    });
-                } else {
-                    req.decoded = decoded;
-                    next();
+                    if (err) {
+                        res(false);
+                    } else {
+                        console.log('return decoded');
+                        res(decoded);
+                    }
                 }
-            });
-        } else {
-            return res.json({
-                success: false,
-                message: 'Auth token is not supplied'
-            });
-        }
+            );
+        });
     }
 };
 

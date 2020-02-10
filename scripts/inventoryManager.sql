@@ -75,7 +75,9 @@ CREATE TABLE classes(
 	hit_dice TEXT,
     PRIMARY KEY (class_id)
 );
-
+ALTER TABLE spells
+ADD higher_level TEXT; 
+ALTER TABLE spells AUTO_INCREMENT = 1;
 CREATE TABLE spells(
     spell_id INT AUTO_INCREMENT,
     spell_name TEXT,
@@ -84,9 +86,10 @@ CREATE TABLE spells(
     casting_time TEXT,
     components TEXT,
     school_id INT,
-    attack_save TEXT,
     damage TEXT,
     description TEXT,
+    spell_range TEXT,
+    higher_level TEXT,
     PRIMARY KEY (spell_id),
     FOREIGN KEY fk_spell_school(school_id)
     REFERENCES schools(school_id)
