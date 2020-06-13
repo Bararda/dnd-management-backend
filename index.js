@@ -16,7 +16,7 @@ app.use(session({
     cookie: {
         name: 'inventory-manager',
         httpOnly: false,
-        maxAge: SESSION_LENGTH_24m,
+        maxAge: parseInt(process.env.SESSION_LENGTH) || SESSION_LENGTH_24m,
         sameSite: 'lax',
         secure: false, // change to true on HTTPS connection
         resave: false,

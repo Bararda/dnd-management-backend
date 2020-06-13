@@ -54,12 +54,14 @@ const authController = {
                 req.decoded = response;
                 next();
             } else {
+                res.status(401);
                 return res.json({
                     success: false,
                     message: "Token is not valid"
                 });
             }
         } else {
+            res.status(401);
             return res.json({
                 success: false,
                 message: "Auth Token not supplied"
