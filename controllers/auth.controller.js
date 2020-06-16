@@ -22,11 +22,13 @@ const authController = {
         // put a good way to invalidate the token here
         req.session.destroy(err => {
             if (err) next(err);
-            else next();
+            else {
+                res.locals.data = { success: true };
+                next();
+            };
         });
     },
     async reissueToken(req, res, next) {
-        console.log("reissue token");
         if (req.session.valid && req.session.token) {
             if (req.decoded.userID) {
                 res.locals.data = await authService.issueToken(
@@ -37,7 +39,6 @@ const authController = {
                 next();
             }
         } else {
-            console.log("1");
             throw 400;
         }
     },

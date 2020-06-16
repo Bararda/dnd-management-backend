@@ -99,7 +99,6 @@ const authService = {
                     if (err) {
                         res(false);
                     } else {
-                        console.log('return decoded');
                         res(decoded);
                     }
                 }

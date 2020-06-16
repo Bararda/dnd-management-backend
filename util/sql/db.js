@@ -48,7 +48,7 @@ const db = {
                         }
                         res(results);
                     };
-                    console.log(query);
+                    // console.log(query);
                     if (values.length === 0) {
                         conn.query(query, callback);
                     } else {

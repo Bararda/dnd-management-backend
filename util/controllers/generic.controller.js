@@ -58,7 +58,6 @@ const genericController = {
         return async (req, res, next) => {
             try {
                 let body = getBody(req, res);
-                console.log(body);
                 res.locals.data = await service(body);
                 next();
             } catch (e) {
