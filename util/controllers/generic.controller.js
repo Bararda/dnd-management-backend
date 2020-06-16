@@ -1,3 +1,4 @@
+const { errorTypes } = require('../responses');
 /**
  * gets the query parameters from the response or the request
  * @param {Request} req 
@@ -79,7 +80,60 @@ const genericController = {
                 next(e);
             }
         };
-    }
+    },
+
+    postWithUser(service) {
+        return async (req, res, next) => {
+            try {
+                let body = getBody(req, res);
+                body.user_id = req.session.user.user_id;
+                res.locals.data = await service(body);
+                next();
+            } catch (e) {
+                next(e);
+            }
+        };
+    },
+    getWithUser(service) {
+        return async (req, res, next) => {
+            try {
+                let query = getQuery(req, res);
+                query.user_id = req.session.user.user_id;
+                res.locals.data = await service(query);
+                next();
+            } catch (e) {
+                next(e);
+            }
+        };
+    },
+    putWithUser(service) {
+        return async (req, res, next) => {
+            try {
+                let query = getQuery(req, res);
+                let body = getBody(req, res);
+                query.user_id = req.session.user.user_id;
+                if(body.user_id) {
+                    throw errorTypes.badRequest;
+                }
+                res.locals.data = await service(query, body);
+                next();
+            } catch (e) {
+                next(e);
+            }
+        };
+    },
+    removeWithUser(service) {
+        return async (req, res, next) => {
+            try {
+                let query = getQuery(req, res);
+                query.user_id = req.session.user.user_id;
+                res.locals.data = await service(query);
+                next();
+            } catch (e) {
+                next(e);
+            }
+        };
+    },
 };
 
 module.exports = genericController;

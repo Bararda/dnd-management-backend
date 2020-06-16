@@ -9,11 +9,16 @@ const damageTypeController = require("./damageType.controller");
 const classSpellController = require("./classSpell.controller");
 const spellDamageTypeController = require("./spellDamageType.controller");
 const spellComponentTypeController = require("./spellComponentType.controller");
+const spellBookController = require("./spellBook.controller");
+const spellBookSpellController = require("./spellBookSpell.controller");
+
 module.exports = {
     userController,
     roleController,
     authController,
     spellController,
+    spellBookController,
+    spellBookSpellController,
     schoolController,
     classController,
     componentTypeController,

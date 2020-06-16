@@ -37,4 +37,10 @@ router.use("/spellDamageTypes", spellDamageTypeRouter);
 const spellComponentTypeRouter = require("./spellComponentType.router");
 router.use("/spellComponentTypes", spellComponentTypeRouter);
 
+const spellBookRouter = require("./spellBook.router");
+router.use("/spellBooks", spellBookRouter);
+
+const spellBookSpellRouter = require("./spellBookSpell.router");
+router.use("/spellBookSpells", spellBookSpellRouter);
+
 module.exports = router;

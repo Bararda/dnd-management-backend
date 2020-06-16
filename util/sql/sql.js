@@ -6,33 +6,17 @@ const isObject = require("isobject");
  */
 function getClause(field, value) {
     try {
-        let val = JSON.parse(value);
+        const val = JSON.parse(value);
         if(isObject(val)) {
-            let clauses = [];
-            //greater than
-            if("gt" in val) {
-                clauses.push("?? > ?");
-            }
-            //less than
-            if("lt" in val) {
-                clauses.push("?? < ?");
-            }
-            //not equals
-            if("ne" in val) {
-                clauses.push("?? != ?");
-            }
-            //between
-            if("bt" in val) {
-                if(Array.isArray(value.bt) && value.bt.length === 2) {
-                    clauses.push("?? between ? AND ?");
-                }
-            }
-            return clauses.join(" AND ");
+            return getClauseFromObject(field, val);
         } else {
-            return "?? = ?";
+            return ["?? = ?", [field, value]];
         }
-    }catch (e) {
-        return "?? = ?";
+    } catch (e) {
+        if(isObject(value)) {
+            return getClauseFromObject(field, value);
+        }
+        return ["?? = ?", [field, value]];
     }
 }
 const sql = {
@@ -43,9 +27,9 @@ const sql = {
         let clauses = [];
         let prepareValues = [];
         Object.entries(query).forEach(([field, value]) => {
-            clauses.push(getClause(field, value));
-            prepareValues.push(field);
-            prepareValues.push(value);
+            const [clause, values] = getClause(field, value);
+            clauses.push(clause);
+            prepareValues.push(...values);
         });
         // if nothing return 1=1 so that the query doesnt break
         if(clauses.length === 0) {
@@ -55,3 +39,48 @@ const sql = {
     }
 }
 module.exports = sql;
+
+
+function getClauseFromObject(field, val) {
+    const clauses = [];
+    const values = [];
+    //greater than
+    if("gt" in val) {
+        clauses.push("?? > ?");
+        values.push(field);
+        values.push(val.gt);
+    }
+    //less than
+    if("lt" in val) {
+        clauses.push("?? < ?");
+        values.push(field);
+        values.push(val.lt);
+    }
+    //not equals
+    if("ne" in val) {
+        clauses.push("?? != ?");
+        values.push(field);
+        values.push(val.ne);
+    }
+    //between
+    if("bt" in val) {
+        if(Array.isArray(value.bt) && value.bt.length === 2) {
+            clauses.push("?? between ? AND ?");
+            values.push(field);
+            values.push(val[0], val[1]);
+        }
+    }
+    if("eq" in val) {
+        clauses.push("?? = ?");
+        values.push(field);
+        values.push(val.eq);
+
+    }
+    if("in" in val) {
+        clauses.push("?? IN(?)");
+        values.push(field);
+        values.push(val.in);
+
+    }
+    return [clauses.join(" AND "), values];
+}

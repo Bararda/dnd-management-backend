@@ -1,4 +1,5 @@
 const { authService } = require("../util/auth");
+const { errorTypes } = require('../util/responses')
 const authController = {
     /**
      * logs the user into the system and sets the flag to validate the session
@@ -6,9 +7,11 @@ const authController = {
     login: async (req, res, next) => {
         try {
             let body = res.locals.body || req.body;
-            res.locals.data = await authService.login(body);
+            const [token, user] = await authService.login(body);
+            res.locals.data = token;
             req.session.valid = true;
-            req.session.token = res.locals.data;
+            req.session.token = token;
+            req.session.user = user;
             next();
         } catch (e) {
             //authController.logout(res, res, next);
@@ -39,7 +42,7 @@ const authController = {
                 next();
             }
         } else {
-            throw 400;
+            throw errorTypes.badRequest;
         }
     },
     async validateToken(req, res, next) {

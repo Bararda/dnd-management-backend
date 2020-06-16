@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const router = require('./routes');
 const https = require('https');
-const { serverError } = require('./util/responses');
+const { errorValidator } = require('./util/responses');
 const session = require('express-session');
 const fs = require('fs');
 const SESSION_LENGTH_24m = 1440000;
@@ -59,10 +59,11 @@ app.use('/', router);
  */
 app.use((err, req, res, next) => {
 	if (err) {
-		serverError.internalServerError(res, err);
+		errorValidator.validateError(res, err);
 		next(err);
+	} else {
+		next();
 	}
-	next();
 });
 
 if (process.env.SECURE === 'true') {

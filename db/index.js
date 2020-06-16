@@ -8,15 +8,20 @@ const damageTypeDb = require("./damageType.db");
 const classSpellDb = require("./classSpell.db");
 const spellDamageTypeDb = require("./spellDamageType.db");
 const spellComponentTypeDb = require("./spellComponentType.db");
+const spellBookDb = require("./spellBook.db");
+const spellBookSpellDb = require("./spellBookSpell.db");
+
 module.exports = {
     userDb,
     roleDb,
     spellDb,
+    spellBookDb,
     schoolDb,
     classDb,
     componentTypeDb,
     damageTypeDb,
     spellDamageTypeDb,
     classSpellDb,
-    spellComponentTypeDb
+    spellComponentTypeDb,
+    spellBookSpellDb,
 };
