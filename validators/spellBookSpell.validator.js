@@ -10,9 +10,7 @@ const spellBookSpellValidator = {
     async validatePost(req, res, next) {
         const userID = req.session.user.user_id;
         const userSpellBooks = await spellBookService.get({user_id: userID});
-        const ids = userSpellBooks.filter((spellBook) => {
-            return spellBook.spell_book_id;
-        });
+        const ids = userSpellBooks.map((spellBook) => spellBook.spell_book_id);
         if(ids.includes(req.body.spell_book_id)) {
             next();
         } else {

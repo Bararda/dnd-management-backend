@@ -20,7 +20,7 @@ const genericValidator = {
 			queryObj.in = matchingIDs;
 		} else {
             if(originalQuery) {
-                queryObj.eq = origialQuery;
+                queryObj.eq = originalQuery;
             }
 		}
 		return { ...queryObj };

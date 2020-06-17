@@ -47,39 +47,33 @@ function getClauseFromObject(field, val) {
     //greater than
     if("gt" in val) {
         clauses.push("?? > ?");
-        values.push(field);
-        values.push(val.gt);
+        values.push(field, val.gt);
     }
     //less than
     if("lt" in val) {
         clauses.push("?? < ?");
-        values.push(field);
-        values.push(val.lt);
+        values.push(field, val.lt);
     }
     //not equals
     if("ne" in val) {
         clauses.push("?? != ?");
-        values.push(field);
-        values.push(val.ne);
+        values.push(field, val.ne);
     }
     //between
     if("bt" in val) {
         if(Array.isArray(value.bt) && value.bt.length === 2) {
             clauses.push("?? between ? AND ?");
-            values.push(field);
-            values.push(val[0], val[1]);
+            values.push(field, val[0], val[1]);
         }
     }
     if("eq" in val) {
         clauses.push("?? = ?");
-        values.push(field);
-        values.push(val.eq);
+        values.push(field, val.eq);
 
     }
     if("in" in val) {
         clauses.push("?? IN(?)");
-        values.push(field);
-        values.push(val.in);
+        values.push(field, val.in);
 
     }
     return [clauses.join(" AND "), values];
