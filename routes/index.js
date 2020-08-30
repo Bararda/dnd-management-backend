@@ -43,4 +43,19 @@ router.use("/spellBooks", spellBookRouter);
 const spellBookSpellRouter = require("./spellBookSpell.router");
 router.use("/spellBookSpells", spellBookSpellRouter);
 
+const bagRouter = require("./bag.router");
+router.use("/bags", bagRouter);
+
+const itemRouter = require("./item.router");
+router.use("/items", itemRouter);
+
+const tagRouter = require("./tag.router");
+router.use("/tags", tagRouter);
+
+const itemTagRouter = require("./itemTag.router");
+router.use("/itemTags", itemTagRouter);
+
+const bagTagRouter = require("./bagTag.router");
+router.use("/bagTags", bagTagRouter);
+
 module.exports = router;
