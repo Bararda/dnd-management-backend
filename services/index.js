@@ -10,6 +10,7 @@ const spellDamageTypeService = require("./spellDamageType.service");
 const spellComponentTypeService = require("./spellComponentType.service");
 const spellBookService = require("./spellBook.service");
 const spellBookSpellService = require("./spellBookSpell.service");
+const puzzleService = require("./puzzle.service");
 const bagService = require("./bag.service");
 const itemService = require("./item.service");
 const tagService = require("./tag.service");
@@ -29,6 +30,7 @@ module.exports = {
     classSpellService,
     spellDamageTypeService,
     spellComponentTypeService,
+    puzzleService,
     bagService,
     itemService,
     tagService,

@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const importRouter = require("./import.router");
-router.use("/import", importRouter);
+// const importRouter = require("./import.router");
+// router.use("/import", importRouter);
 
 const authRouter = require("./auth.router");
 router.use("/auth", authRouter);
@@ -42,6 +42,12 @@ router.use("/spellBooks", spellBookRouter);
 
 const spellBookSpellRouter = require("./spellBookSpell.router");
 router.use("/spellBookSpells", spellBookSpellRouter);
+
+const puzzleRouter = require("./puzzle.router");
+router.use("/puzzles", puzzleRouter);
+
+const subscriptionRouter = require("./subscription.router");
+router.use("/subscribe", subscriptionRouter);
 
 const bagRouter = require("./bag.router");
 router.use("/bags", bagRouter);
