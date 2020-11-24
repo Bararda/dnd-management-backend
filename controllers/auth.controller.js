@@ -14,8 +14,7 @@ const authController = {
             req.session.user = user;
             next();
         } catch (e) {
-            //authController.logout(res, res, next);
-            next(e);
+            res.status(401).json({message: 'unauthorized'});
         }
     },
     /**

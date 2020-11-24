@@ -12,6 +12,11 @@ const spellComponentTypeController = require("./spellComponentType.controller");
 const spellBookController = require("./spellBook.controller");
 const spellBookSpellController = require("./spellBookSpell.controller");
 const puzzleController = require("./puzzle.controller");
+const bagController = require("./bag.controller");
+const itemController = require("./item.controller");
+const itemTagController = require("./itemTag.controller");
+const bagTagController = require("./bagTag.controller");
+const tagController = require("./tag.controller");
 
 module.exports = {
     userController,
@@ -27,5 +32,10 @@ module.exports = {
     spellDamageTypeController,
     classSpellController,
     spellComponentTypeController,
-    puzzleController
+    puzzleController,
+    bagController,
+    itemController,
+    itemTagController,
+    bagTagController,
+    tagController
 };

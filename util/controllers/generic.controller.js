@@ -85,11 +85,11 @@ const genericController = {
         };
     },
 
-    postWithUser(service) {
+    postWithUser(service, field = 'user_id') {
         return async (req, res, next) => {
             try {
                 let body = getBody(req, res);
-                body.user_id = req.session.user.user_id;
+                body[field] = req.session.user.user_id;
                 res.locals.data = await service(body);
                 next();
             } catch (e) {
@@ -97,11 +97,11 @@ const genericController = {
             }
         };
     },
-    getWithUser(service) {
+    getWithUser(service, field = 'user_id') {
         return async (req, res, next) => {
             try {
                 let query = getQuery(req, res);
-                query.user_id = req.session.user.user_id;
+                query[field] = req.session.user.user_id;
                 res.locals.data = await service(query);
                 next();
             } catch (e) {
@@ -109,13 +109,13 @@ const genericController = {
             }
         };
     },
-    putWithUser(service) {
+    putWithUser(service, field = 'user_id') {
         return async (req, res, next) => {
             try {
                 let query = getQuery(req, res);
                 let body = getBody(req, res);
-                query.user_id = req.session.user.user_id;
-                if(body.user_id) {
+                query[field] = req.session.user.user_id;
+                if(body[field]) {
                     throw errorTypes.badRequest;
                 }
                 res.locals.data = await service(query, body);
@@ -125,11 +125,11 @@ const genericController = {
             }
         };
     },
-    removeWithUser(service) {
+    removeWithUser(service, field = 'user_id') {
         return async (req, res, next) => {
             try {
                 let query = getQuery(req, res);
-                query.user_id = req.session.user.user_id;
+                query[field] = req.session.user.user_id;
                 res.locals.data = await service(query);
                 next();
             } catch (e) {
