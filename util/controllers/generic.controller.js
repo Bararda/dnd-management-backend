@@ -15,6 +15,9 @@ function getQuery(req, res) {
 function getBody(req, res) {
     return res.locals.body || req.body;
 }
+
+let clients = [];
+let messageID = 0;
 /**
  * generic controller that takes in a service to call passing it the data it needs for each type of request.
  * This is used to decouple data management from the request
@@ -134,6 +137,52 @@ const genericController = {
             }
         };
     },
+    subscribe: (req, res, next) => {
+            const headers = {
+                'Content-Type': 'text/event-stream',
+                'Connection': 'keep-alive',
+                'Cache-Control': 'no-cache'
+              };
+              res.writeHead(200, headers);
+              const data = `data: ${JSON.stringify({connected: true})}\n\n`;
+              res.write(`event: connected\n`);
+              res.write(`id: ${messageID}\n`);
+              res.write(data);
+              messageID++;
+            const clientId = req.session.id;
+            const client = {
+                id: clientId,
+                res,
+            }
+            clients.push(client);
+
+            const intervalId = setInterval(() => {
+                res.write(`id: ${messageID}\n`);
+                res.write(`event: heartbeat\n`);
+                res.write(`data: heartbeat\n\n`);
+                messageID++;
+            }, 1000 * 60);
+
+            req.on('close', () => {
+                clients = clients.filter(c => c.id !== clientId);
+                clearInterval(intervalId);
+            });
+            next();
+    },
+    notify(eventType) {
+        return (req, res, next) => {
+            const data = res.locals.data;
+            clients.forEach(c => {
+                if(c.id !== req.session.id) {
+                    c.res.write(`id: ${messageID}\n`);
+                    c.res.write(`event: ${eventType}\n`);
+                    c.res.write(`data: ${JSON.stringify(data)}\n\n`);
+                    messageID++;
+                }
+            });
+            next();
+        };
+    }
 };
 
 module.exports = genericController;
