@@ -4,10 +4,10 @@ const sendResponse = require("./sendResponse");
  */
 const success = {
     ok(res, data) {
-        sendResponse(res, 200, data || "OK");
+        sendResponse(res, 200, data);
     },
     created(res, message) {
-        sendResponse(res, 201, message || "created");
+        sendResponse(res, 201, message);
     }
 }
 

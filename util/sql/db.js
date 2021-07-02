@@ -22,7 +22,7 @@ const db = {
                 host: process.env.DB_HOSTNAME || "localhost",
                 user: process.env.DB_USERNAME,
                 password: process.env.DB_PASSWORD,
-                database: process.env.DATABASE || "InventoryManager"
+                database: process.env.DB_DATABASE || "InventoryManager"
             });
         }
         return this.pool;
@@ -48,7 +48,6 @@ const db = {
                         }
                         res(results);
                     };
-                    console.log(query);
                     if (values.length === 0) {
                         conn.query(query, callback);
                     } else {

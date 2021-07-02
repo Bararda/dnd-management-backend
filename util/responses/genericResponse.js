@@ -12,7 +12,7 @@ const genericResponse = {
         next();
     },
     post(req, res, next) {
-        successResponse.created(res);
+        successResponse.created(res, res.locals.data);
         next();
     },
     remove(req, res, next) {

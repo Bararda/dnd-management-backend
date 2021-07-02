@@ -2,6 +2,8 @@ const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const bcrypt = require("bcrypt");
 const userService = require("../../services/user.service");
+const { errorTypes } = require('../responses')
+
 /**
  * gets the private key from a file in the system
  */
@@ -43,21 +45,20 @@ const authService = {
      * @param {Next} next
      */
     async login(body) {
-        let username = body.username;
+        const username = body.username;
         const password = body.password;
         if (username && password) {
-            let user = await userService.get({ username });
-            user = user[0];
-            if (await bcrypt.compare(password, user.password)) {
+            const [user] = await userService.get({ username }); 
+            if (user && await bcrypt.compare(password, user.password)) {
                 const token = await authService.issueToken(user.user_id);
 
-                return token;
+                return [token, user];
             } else {
                 //unauthorized
-                throw 401;
+                throw errorTypes.unauthorized;
             }
         } else {
-            throw 400;
+            throw errorTypes.badRequest;
         }
     },
     /**
@@ -99,7 +100,6 @@ const authService = {
                     if (err) {
                         res(false);
                     } else {
-                        console.log('return decoded');
                         res(decoded);
                     }
                 }

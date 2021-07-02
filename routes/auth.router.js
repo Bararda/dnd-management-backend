@@ -5,6 +5,6 @@ const { genericResponse } = require("../util/responses");
 
 router.post("/login", [authController.login, genericResponse.get]);
 router.get("/reissueToken", [authController.validateToken ,authController.reissueToken, genericResponse.get]);
-router.post("/logout", [authController.logout, genericResponse.get]);
+router.delete("/logout", [authController.logout, genericResponse.get]);
 
 module.exports = router;

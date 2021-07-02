@@ -1,5 +1,7 @@
 const { genericService } = require("../util");
 const { userDb } = require("../db");
+const { errorTypes } = require('../util/responses')
+
 const bcrypt = require("bcrypt");
 const userService = {
     get: genericService.get(userDb.get),
@@ -11,7 +13,7 @@ const userService = {
                 user.password = hash;
                 let results = await userDb.create(user);
                 return results;
-            } else throw 400;
+            } else throw errorTypes.badRequest;
     }),
     remove: genericService.remove(userDb.remove)
 };

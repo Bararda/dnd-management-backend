@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const importRouter = require("./import.router");
-router.use("/import", importRouter);
+// const importRouter = require("./import.router");
+// router.use("/import", importRouter);
 
 const authRouter = require("./auth.router");
 router.use("/auth", authRouter);
@@ -36,5 +36,32 @@ router.use("/spellDamageTypes", spellDamageTypeRouter);
 
 const spellComponentTypeRouter = require("./spellComponentType.router");
 router.use("/spellComponentTypes", spellComponentTypeRouter);
+
+const spellBookRouter = require("./spellBook.router");
+router.use("/spellBooks", spellBookRouter);
+
+const spellBookSpellRouter = require("./spellBookSpell.router");
+router.use("/spellBookSpells", spellBookSpellRouter);
+
+const puzzleRouter = require("./puzzle.router");
+router.use("/puzzles", puzzleRouter);
+
+const subscriptionRouter = require("./subscription.router");
+router.use("/subscribe", subscriptionRouter);
+
+const bagRouter = require("./bag.router");
+router.use("/bags", bagRouter);
+
+const itemRouter = require("./item.router");
+router.use("/items", itemRouter);
+
+const tagRouter = require("./tag.router");
+router.use("/tags", tagRouter);
+
+const itemTagRouter = require("./itemTag.router");
+router.use("/itemTags", itemTagRouter);
+
+const bagTagRouter = require("./bagTag.router");
+router.use("/bagTags", bagTagRouter);
 
 module.exports = router;

@@ -90,6 +90,8 @@ CREATE TABLE spells(
     description TEXT,
     spell_range TEXT,
     higher_level TEXT,
+    concentration BOOLEAN,
+    ritual BOOLEAN,
     PRIMARY KEY (spell_id),
     FOREIGN KEY fk_spell_school(school_id)
     REFERENCES schools(school_id)
@@ -104,18 +106,6 @@ CREATE TABLE class_spells(
     ON DELETE CASCADE,
     FOREIGN KEY fk_class_spells(class_id)
     REFERENCES classes(class_id)
-    ON DELETE CASCADE
-);
-
-CREATE TABLE user_spells(
-    spell_id INT,
-    user_id INT,
-    PRIMARY KEY (spell_id, user_id),
-    FOREIGN KEY fk_spell_user(spell_id)
-    REFERENCES spells(spell_id)
-    ON DELETE CASCADE,
-    FOREIGN KEY fk_user_spells(user_id)
-    REFERENCES users(user_id)
     ON DELETE CASCADE
 );
 
@@ -155,3 +145,69 @@ CREATE TABLE spell_damagetypes(
     ON DELETE CASCADE
 );
 
+CREATE TABLE `spell_books` (
+  `spell_book_id` INT AUTO_INCREMENT,
+  `spell_book_name` TEXT NOT NULL,
+  `spell_book_description` TEXT NULL,
+  `user_id` INT NOT NULL,
+  PRIMARY KEY (`spell_book_id`),
+  INDEX `fk_spellbook_user_idx` (`user_id` ASC),
+  CONSTRAINT `fk_spellbook_user`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `users` (`user_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
+
+CREATE TABLE `spell_book_spells` (
+  `spell_book_id` INT NOT NULL,
+  `spell_id` INT NOT NULL,
+  PRIMARY KEY (`spell_book_id`, `spell_id`),
+  INDEX `fk_spell_spellbook_idx` (`spell_id` ASC),
+  CONSTRAINT `fk_spell_spellbook`
+    FOREIGN KEY (`spell_id`)
+    REFERENCES `spells` (`spell_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_spellbook_spell`
+    FOREIGN KEY (`spell_book_id`)
+    REFERENCES `spell_books` (`spell_book_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
+
+ALTER TABLE `bags` 
+ADD INDEX `fk_bag_owner_idx` (`owner_id` ASC);
+;
+ALTER TABLE `bags` 
+ADD CONSTRAINT `fk_bag_owner`
+  FOREIGN KEY (`owner_id`)
+  REFERENCES `users` (`user_id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE `items` 
+ADD COLUMN `owner_id` INT NULL AFTER `bag_id`,
+ADD INDEX `fk_item_bag_idx` (`bag_id` ASC),
+ADD INDEX `fk_item_owner_idx` (`owner_id` ASC);
+;
+ALTER TABLE `items` 
+ADD CONSTRAINT `fk_item_bag`
+  FOREIGN KEY (`bag_id`)
+  REFERENCES `bags` (`bag_id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_item_owner`
+  FOREIGN KEY (`owner_id`)
+  REFERENCES `users` (`user_id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+  ALTER TABLE `tags` 
+ADD COLUMN `user_id` INT NULL AFTER `tag_description`,
+ADD INDEX `fk_tag_user_idx` (`user_id` ASC);
+;
+ALTER TABLE `tags` 
+ADD CONSTRAINT `fk_tag_user`
+  FOREIGN KEY (`user_id`)
+  REFERENCES `users` (`user_id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;

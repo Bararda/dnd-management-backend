@@ -11,3 +11,5 @@ data/
 util/import/
 routes/import.router.js
 scripts/spellsInit.sql
+fullchain.pem
+privkey.pem
